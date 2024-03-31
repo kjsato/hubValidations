@@ -23,7 +23,7 @@
 #' file_path <- "team1-goodmodel/2022-10-08-team1-goodmodel.csv"
 #' validate_model_data(hub_path, file_path)
 validate_model_data <- function(hub_path, file_path, round_id_col = NULL,
-                                validations_cfg_path = NULL) {
+                                validations_cfg_path = NULL, origin_date_conv = FALSE) {
   checks <- new_hub_validations()
 
   file_meta <- parse_file_name(file_path)
@@ -109,6 +109,11 @@ validate_model_data <- function(hub_path, file_path, round_id_col = NULL,
     return(checks)
   }
 
+  # If origin_date_conv is TRUE, convert origin_date column to Date
+  if (origin_date_conv && "origin_date" %in% colnames(tbl)) {
+    tbl$origin_date <- as.Date(tbl$origin_date)
+  }
+  
   checks$col_types <- try_check(
     check_tbl_col_types(
       tbl,
