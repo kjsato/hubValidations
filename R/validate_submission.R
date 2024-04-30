@@ -80,8 +80,9 @@ validate_submission <- function(hub_path, file_path, round_id_col = NULL,
     hub_path = hub_path,
     file_path = file_path,
     round_id_col = round_id_col,
-    validations_cfg_path = validations_cfg_path
-  )
+    validations_cfg_path = validations_cfg_path,
+    origin_date_conv = TRUE)
+
 
   combine(check_hub_config, checks_file, checks_data, checks_submission_time)
 }
