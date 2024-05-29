@@ -8,7 +8,8 @@ validate_model_data(
   hub_path,
   file_path,
   round_id_col = NULL,
-  validations_cfg_path = NULL
+  validations_cfg_path = NULL,
+  origin_date_conv = FALSE
 )
 }
 \arguments{

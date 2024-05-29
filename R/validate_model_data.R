@@ -23,7 +23,7 @@
 #' file_path <- "team1-goodmodel/2022-10-08-team1-goodmodel.csv"
 #' validate_model_data(hub_path, file_path)
 validate_model_data <- function(hub_path, file_path, round_id_col = NULL,
-                                validations_cfg_path = NULL) {
+                                validations_cfg_path = NULL, origin_date_conv = FALSE) {
   checks <- new_hub_validations()
 
   file_meta <- parse_file_name(file_path)
@@ -56,6 +56,21 @@ validate_model_data <- function(hub_path, file_path, round_id_col = NULL,
     )
   }
 
+  # If origin_date_conv is TRUE, convert origin_date column to Date
+  # class if it exists and is of class POSIXt.
+  # The reason to be here is to be needed before round_id_col checks
+  if (origin_date_conv && "origin_date" %in% colnames(tbl) && "POSIXt" %in% class(tbl$origin_date)) {
+    tbl$origin_date <- as.Date(tbl$origin_date)
+    # Write the dataframe back to the file
+    full_path <- abs_file_path(file_path, hub_path)
+    if (fs::path_ext(file_path) == "csv") {
+      arrow::write_csv_arrow(tbl, full_path)
+    } else if (fs::path_ext(file_path) == "parquet") {
+      arrow::write_parquet(tbl, full_path)
+    } else if (fs::path_ext(file_path) == "feather") {
+      arrow::write_feather(tbl, full_path)
+    }
+  }
 
   # -- File round ID checks ----
   # Will be skipped if round config round_id_from_var is FALSE and no round_id_col
