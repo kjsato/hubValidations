@@ -38,6 +38,7 @@ parse_file_name <- function(file_path, file_type = c("model_output", "model_meta
                           model_output = 3L, # nolint
                           model_metadata = 2L
                         )
+  )
   if (length(split_res) != exp_n) {
     cli::cli_abort(
       "Could not parse file name {.path {file_name}} for submission metadata.
