@@ -107,8 +107,8 @@ validate_pr <- function(hub_path = ".", gh_repo, pr_number,
 
   # validations$valid_config <- try_check(check_config_hub_valid(hub_path),
   validations$valid_config <- try_check(check_config_hub_valid(hub_path,
-    branch = "br-v3.0.0",
-    schema_repo = "kjsato/schemas"),
+    branch = "main",
+    schema_repo = "hubverse-org/schemas"),
     file_path = basename(hub_path)
   )
   if (is_any_error(validations$valid_config)) {
