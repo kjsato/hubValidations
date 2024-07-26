@@ -105,10 +105,10 @@ validate_pr <- function(hub_path = ".", gh_repo, pr_number,
   model_metadata_dir <- "model-metadata" # nolint: object_name_linter
   validations <- new_hub_validations()
 
-  # validations$valid_config <- try_check(check_config_hub_valid(hub_path),
-  validations$valid_config <- try_check(check_config_hub_valid(hub_path,
-    branch = "br-v3.0.0",
-    schema_repo = "kjsato/schemas"),
+ # validations$valid_config <- try_check(check_config_hub_valid(hub_path),
+  validations$valid_config <- try_check(check_config_hub_valid(hub_path, # nolint
+    branch = "main", # nolint
+    schema_repo = "hubverse-org/schemas"),
     file_path = basename(hub_path)
   )
   if (is_any_error(validations$valid_config)) {
