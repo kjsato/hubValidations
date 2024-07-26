@@ -5,7 +5,7 @@
 #' @inherit check_valid_round_id return params
 #'
 #' @export
-check_config_hub_valid <- function(hub_path) {
+check_config_hub_valid <- function(hub_path, branch, schema_repo) {
   valid_config <- hubAdmin::validate_hub_config(hub_path, branch = branch, schema_repo = schema_repo) %>%
     suppressMessages() %>%
     suppressWarnings()

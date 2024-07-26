@@ -33,9 +33,11 @@ parse_file_name <- function(file_path, file_type = c("model_output", "model_meta
       split_pattern
     )
   )
-  exp_n <- switch(file_type,
-    model_output = 3L,
-    model_metadata = 2L
+  exp_n <- ifelse(file_type == "model_output" && length(split_res) == 4L, 4L,
+                  switch(file_type, # nolint
+                          model_output = 3L, # nolint
+                          model_metadata = 2L
+                        )
   )
   if (length(split_res) != exp_n) {
     cli::cli_abort(
@@ -52,6 +54,7 @@ parse_file_name <- function(file_path, file_type = c("model_output", "model_meta
     team_abbr = split_res[2],
     model_abbr = split_res[3],
     model_id = paste(split_res[2], split_res[3], sep = "-"),
+    postfix = ifelse(length(split_res) >= 4, split_res[4], NA),
     ext = fs::path_ext(file_path)
   )
 }
