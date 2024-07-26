@@ -47,7 +47,8 @@ validate_submission <- function(hub_path, file_path, round_id_col = NULL,
   check_hub_config <- new_hub_validations()
   if (!skip_check_config) {
     check_hub_config$valid_config <- try_check(
-      check_config_hub_valid(hub_path),
+      #check_config_hub_valid(hub_path),
+      check_config_hub_valid(hub_path, branch = "main", schema_repo ="hubverse-org/schemas"), # mod from interim
       file_path
     )
     if (not_pass(check_hub_config$valid_config)) {
