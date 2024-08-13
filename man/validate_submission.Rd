@@ -9,6 +9,8 @@ validate_submission(
   file_path,
   round_id_col = NULL,
   validations_cfg_path = NULL,
+  output_type_id_datatype = c("from_config", "auto", "character", "double", "integer",
+    "logical", "Date"),
   skip_submit_window_check = FALSE,
   skip_check_config = FALSE,
   submit_window_ref_date_from = c("file", "file_path")
@@ -35,6 +37,20 @@ config file.}
 \item{validations_cfg_path}{Path to \code{validations.yml} file. If \code{NULL}
 defaults to \code{hub-config/validations.yml}.}
 
+\item{output_type_id_datatype}{character string. One of \code{"from_config"}, \code{"auto"},
+\code{"character"}, \code{"double"}, \code{"integer"}, \code{"logical"}, \code{"Date"}.
+Defaults to \code{"from_config"} which uses the setting in the \code{output_type_id_datatype}
+property in the \code{tasks.json} config file if available. If the property is
+not set in the config, the argument falls back to \code{"auto"} which determines
+the  \code{output_type_id} data type automatically from the \code{tasks.json}
+config file as the simplest data type required to represent all output
+type ID values across all output types in the hub.
+Other data type values can be used to override automatic determination.
+Note that attempting to coerce \code{output_type_id} to a data type that is
+not valid for the data (e.g. trying to coerce\code{"character"} values to
+\code{"double"}) will likely result in an error or potentially unexpected
+behaviour so use with care.}
+
 \item{skip_submit_window_check}{Logical. Whether to skip the submission window check.}
 
 \item{skip_check_config}{Logical. Whether to skip the hub config validation check.
@@ -56,7 +72,7 @@ will return early if a check returns an error.
 
 For more details on the structure of \verb{<hub_validations>} objects, including
 how to access more information on individual checks,
-see \href{https://infectious-disease-modeling-hubs.github.io/hubValidations/articles/hub-validations-class.html}{article on \verb{<hub_validations>} S3 class objects}.
+see \href{https://hubverse-org.github.io/hubValidations/articles/hub-validations-class.html}{article on \verb{<hub_validations>} S3 class objects}.
 }
 \description{
 Checks both file level properties like
@@ -214,6 +230,29 @@ Details of checks performed by \code{validate_submission()}\if{html}{\out{<table
    <td style="text-align:left;"> FALSE </td>
    <td style="text-align:left;"> check_failure </td>
    <td style="text-align:left;"> error_tbl: table of rows affected </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;"> spl_compound_tid </td>
+   <td style="text-align:left;"> Samples contain single unique values for each compound task ID within individual samples (v3 and above schema only). </td>
+   <td style="text-align:left;"> TRUE </td>
+   <td style="text-align:left;"> check_error </td>
+   <td style="text-align:left;"> errors: list containing item for each sample failing validation with breakdown of unique values for each compound task ID. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;"> spl_non_compound_tid </td>
+   <td style="text-align:left;"> Samples contain single unique combination of non-compound task ID values across all samples (v3 and above schema only). </td>
+   <td style="text-align:left;"> TRUE </td>
+   <td style="text-align:left;"> check_error </td>
+   <td style="text-align:left;"> errors: list containing item for each modeling task with vectors of output type ids of samples failing validation and example table of most frequent non-compound task ID value combination
+across all samples in the modeling task. </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;font-weight: bold;"> spl_n </td>
+   <td style="text-align:left;"> Number of samples for a given compound idx falls within accepted compound task range (v3 and above schema only). </td>
+   <td style="text-align:left;"> FALSE </td>
+   <td style="text-align:left;"> check_failure </td>
+   <td style="text-align:left;"> errors: list containing item for each compound_idx failing validation with sample count, metadata on expected samples and example table of expected structure for samples belonging to
+the compound idx in question. </td>
   </tr>
 </tbody>
 </table>

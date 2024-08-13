@@ -160,10 +160,12 @@ test_that("validate_submission fails when csv cannot be parsed according to sche
 })
 
 test_that("File containing task ID with all null properties validate correctly", {
+  skip_if_offline()
+
   expect_snapshot(
     str(
       validate_submission(
-        hub_path = test_path("testdata/hub-null"),
+        hub_path = test_path("testdata/hub-nul"),
         file_path = "team-model/2023-11-26-team-model.parquet",
         skip_submit_window_check = TRUE
       )
@@ -173,7 +175,7 @@ test_that("File containing task ID with all null properties validate correctly",
     suppressMessages(
       check_for_errors(
         validate_submission(
-          hub_path = test_path("testdata/hub-null"),
+          hub_path = test_path("testdata/hub-nul"),
           file_path = "team-model/2023-11-26-team-model.parquet",
           skip_submit_window_check = TRUE
         )
@@ -183,7 +185,7 @@ test_that("File containing task ID with all null properties validate correctly",
   expect_snapshot(
     str(
       validate_submission(
-        hub_path = test_path("testdata/hub-null"),
+        hub_path = test_path("testdata/hub-nul"),
         file_path = "team-model/2023-11-19-team-model.parquet",
         skip_submit_window_check = TRUE
       )
@@ -193,11 +195,80 @@ test_that("File containing task ID with all null properties validate correctly",
     suppressMessages(
       check_for_errors(
         validate_submission(
-          hub_path = test_path("testdata/hub-null"),
+          hub_path = test_path("testdata/hub-nul"),
           file_path = "team-model/2023-11-19-team-model.parquet",
           skip_submit_window_check = TRUE
         )
       )
     )
+  )
+})
+
+test_that("validate_submission handles overriding output type id data type correctly.", {
+  skip_if_offline()
+
+  # Test with double output type id data type on parquet file
+  # Getting character setting from config should pass
+  expect_snapshot(
+    validate_submission(
+      hub_path = test_path("testdata/hub-it"),
+      file_path = "Tm-Md/2023-11-11-Tm-Md.parquet",
+      skip_submit_window_check = TRUE
+    )[["col_types"]]
+  )
+  # Should pass
+  expect_snapshot(
+    validate_submission(
+      hub_path = test_path("testdata/hub-it"),
+      file_path = "Tm-Md/2023-11-11-Tm-Md.parquet",
+      skip_submit_window_check = TRUE,
+      output_type_id_datatype = "double"
+    )[["col_types"]]
+  )
+  # Should pass
+  expect_snapshot(
+    validate_submission(
+      hub_path = test_path("testdata/hub-it"),
+      file_path = "Tm-Md/2023-11-11-Tm-Md.parquet",
+      skip_submit_window_check = TRUE,
+      output_type_id_datatype = "auto"
+    )[["col_types"]]
+  )
+  # Should fail with warning
+  expect_snapshot(
+    validate_submission(
+      hub_path = test_path("testdata/hub-it"),
+      file_path = "Tm-Md/2023-11-11-Tm-Md.parquet",
+      skip_submit_window_check = TRUE,
+      output_type_id_datatype = "character"
+    )[["col_types"]]
+  )
+
+  # Test with character output type id data type on parquet file
+  # Getting character setting from config should pass
+  expect_snapshot(
+    validate_submission(
+      hub_path = test_path("testdata/hub-it"),
+      file_path = "Tm-Md/2023-11-18-Tm-Md.parquet",
+      skip_submit_window_check = TRUE
+    )[["col_types"]]
+  )
+  # Should fail with warning
+  expect_snapshot(
+    validate_submission(
+      hub_path = test_path("testdata/hub-it"),
+      file_path = "Tm-Md/2023-11-18-Tm-Md.parquet",
+      skip_submit_window_check = TRUE,
+      output_type_id_datatype = "double"
+    )[["col_types"]]
+  )
+  # Should pass
+  expect_snapshot(
+    validate_submission(
+      hub_path = test_path("testdata/hub-it"),
+      file_path = "Tm-Md/2023-11-18-Tm-Md.parquet",
+      skip_submit_window_check = TRUE,
+      output_type_id_datatype = "character"
+    )[["col_types"]]
   )
 })

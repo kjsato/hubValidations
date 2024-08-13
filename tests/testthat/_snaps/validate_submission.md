@@ -568,13 +568,13 @@
 # File containing task ID with all null properties validate correctly
 
     Code
-      str(validate_submission(hub_path = test_path("testdata/hub-null"), file_path = "team-model/2023-11-26-team-model.parquet",
+      str(validate_submission(hub_path = test_path("testdata/hub-nul"), file_path = "team-model/2023-11-26-team-model.parquet",
       skip_submit_window_check = TRUE))
     Output
       List of 19
        $ valid_config      :List of 4
         ..$ message       : chr "All hub config files are valid. \n "
-        ..$ where         : chr "hub-null"
+        ..$ where         : chr "hub-nul"
         ..$ call          : chr "check_config_hub_valid"
         ..$ use_cli_format: logi TRUE
         ..- attr(*, "class")= chr [1:5] "check_success" "hub_check" "rlang_message" "message" ...
@@ -701,13 +701,13 @@
 ---
 
     Code
-      str(validate_submission(hub_path = test_path("testdata/hub-null"), file_path = "team-model/2023-11-19-team-model.parquet",
+      str(validate_submission(hub_path = test_path("testdata/hub-nul"), file_path = "team-model/2023-11-19-team-model.parquet",
       skip_submit_window_check = TRUE))
     Output
       List of 19
        $ valid_config      :List of 4
         ..$ message       : chr "All hub config files are valid. \n "
-        ..$ where         : chr "hub-null"
+        ..$ where         : chr "hub-nul"
         ..$ call          : chr "check_config_hub_valid"
         ..$ use_cli_format: logi TRUE
         ..- attr(*, "class")= chr [1:5] "check_success" "hub_check" "rlang_message" "message" ...
@@ -830,4 +830,79 @@
         ..$ use_cli_format: logi TRUE
         ..- attr(*, "class")= chr [1:5] "check_info" "hub_check" "rlang_message" "message" ...
        - attr(*, "class")= chr [1:2] "hub_validations" "list"
+
+# validate_submission handles overriding output type id data type correctly.
+
+    Code
+      validate_submission(hub_path = test_path("testdata/hub-it"), file_path = "Tm-Md/2023-11-11-Tm-Md.parquet",
+      skip_submit_window_check = TRUE)[["col_types"]]
+    Output
+      <warning/check_failure>
+      Warning:
+      Column data types do not match hub schema.  `output_type_id` should be "character" not "double".
+
+---
+
+    Code
+      validate_submission(hub_path = test_path("testdata/hub-it"), file_path = "Tm-Md/2023-11-11-Tm-Md.parquet",
+      skip_submit_window_check = TRUE, output_type_id_datatype = "double")[[
+        "col_types"]]
+    Output
+      <message/check_success>
+      Message:
+      Column data types match hub schema.
+
+---
+
+    Code
+      validate_submission(hub_path = test_path("testdata/hub-it"), file_path = "Tm-Md/2023-11-11-Tm-Md.parquet",
+      skip_submit_window_check = TRUE, output_type_id_datatype = "auto")[[
+        "col_types"]]
+    Output
+      <message/check_success>
+      Message:
+      Column data types match hub schema.
+
+---
+
+    Code
+      validate_submission(hub_path = test_path("testdata/hub-it"), file_path = "Tm-Md/2023-11-11-Tm-Md.parquet",
+      skip_submit_window_check = TRUE, output_type_id_datatype = "character")[[
+        "col_types"]]
+    Output
+      <warning/check_failure>
+      Warning:
+      Column data types do not match hub schema.  `output_type_id` should be "character" not "double".
+
+---
+
+    Code
+      validate_submission(hub_path = test_path("testdata/hub-it"), file_path = "Tm-Md/2023-11-18-Tm-Md.parquet",
+      skip_submit_window_check = TRUE)[["col_types"]]
+    Output
+      <message/check_success>
+      Message:
+      Column data types match hub schema.
+
+---
+
+    Code
+      validate_submission(hub_path = test_path("testdata/hub-it"), file_path = "Tm-Md/2023-11-18-Tm-Md.parquet",
+      skip_submit_window_check = TRUE, output_type_id_datatype = "double")[[
+        "col_types"]]
+    Output
+      <warning/check_failure>
+      Warning:
+      Column data types do not match hub schema.  `output_type_id` should be "double" not "character".
+
+---
+
+    Code
+      validate_submission(hub_path = test_path("testdata/hub-it"), file_path = "Tm-Md/2023-11-18-Tm-Md.parquet",
+      skip_submit_window_check = TRUE, output_type_id_datatype = "character")[[
+        "col_types"]]
+    Output
+      <message/check_success>
+      Message:
+      Column data types match hub schema.
 
