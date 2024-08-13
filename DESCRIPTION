@@ -1,6 +1,6 @@
 Package: hubValidations
 Title: Testing framework for hubverse hub validations
-Version: 0.4.0
+Version: 0.4.0-1
 Authors@R: c(
     person(
         given = "Anna", 
@@ -61,9 +61,9 @@ Suggests:
     testthis,
     withr
 Remotes:
-    hubverse-org/hubUtils,
-    hubverse-org/hubData,
-    hubverse-org/hubAdmin,
+    kjsato/hubUtils@main-mr_schema,
+    kjsato/hubData@main-mr_schema,
+    kjsato/hubAdmin@main-mr_schema,
     assignUser/octolog,
     apache/arrow/r@apache-arrow-15.0.2
 Config/testthat/edition: 3
