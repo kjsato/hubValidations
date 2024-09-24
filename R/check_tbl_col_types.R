@@ -7,7 +7,7 @@
 #' @return
 #' Depending on whether validation has succeeded, one of:
 #' - `<message/check_success>` condition class object.
-#' - `<warning/check_failure>` condition class object.
+#' - `<error/check_failure>` condition class object.
 #'
 #' Returned object also inherits from subclass `<hub_check>`.
 #' @export
@@ -29,7 +29,7 @@ check_tbl_col_types <- function(tbl, file_path, hub_path,
   tbl_types <- purrr::map_chr(tbl, ~ if (inherits(.x, "numeric")) {
     typeof(.x)
   } else {
-    class(.x)
+    paste(class(.x), collapse = "/")
   })
   compare_types <- schema == tbl_types
 

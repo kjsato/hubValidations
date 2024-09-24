@@ -84,7 +84,7 @@ Ignoring derived task IDs means that the validity of derived task ID value combi
 
 Most hubs require that model output files for a given round are submitted within a submission window [defined in the `"submission_due"` property of the `tasks.json` hub config file](https://hubverse.io/en/latest/quickstart-hub-admin/tasks-config.html#setting-up-submissions-due). 
 
-`validate_pr()` includes submission window checks for model output files and returns a `<warning/check_failure>` condition class object if a file is submitted outside the accepted submission window.
+`validate_pr()` includes submission window checks for model output files and returns a `<error/check_failure>` condition class object if a file is submitted outside the accepted submission window.
 
 To disable submission window checks, argument `skip_submit_window_check` can be set to `TRUE`.
 
@@ -124,7 +124,7 @@ These settings can be modified if required though the use of arguments `file_mod
 - **`file_modification_check`** controls whether modification/deletion checks are performed, what is returned if modifications/deletions are detected and accepts one of the following values: 
 
   - **`"error"`**: Appends a `<error/check_error>` condition class object for each applicable modified/deleted file. Will result in validation workflow failure.
-  - **`"warning"`**: Appends a `<warning/check_warning>` condition class object for each applicable modified/deleted file. Will result in validation workflow failure.
+  - **`"failure"`**: Appends a `<error/check_failure>` condition class object for each applicable modified/deleted file. Will result in validation workflow failure.
   - **`"message"`**: Appends a `<message/check_info>` condition class object for each applicable modified/deleted file. Will not result in validation workflow failure.
   - **`"none"`**: No modification/deletion checks performed.
 
