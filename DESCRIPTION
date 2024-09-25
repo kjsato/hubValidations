@@ -61,17 +61,11 @@ Suggests:
     testthis,
     withr
 Remotes:
-<<<<<<< HEAD
     kjsato/hubUtils@main-mr_schema,
     kjsato/hubData@main-mr_schema,
     kjsato/hubAdmin@main-mr_schema,
     assignUser/octolog,
     apache/arrow/r@apache-arrow-15.0.2
-=======
-    hubverse-org/hubUtils,
-    hubverse-org/hubData,
-    hubverse-org/hubAdmin
->>>>>>> upstream/main
 Config/testthat/edition: 3
 Config/Needs/website: pkgdown, hubverse-org/hubStyle
 Encoding: UTF-8
